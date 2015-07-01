@@ -1,0 +1,11 @@
+{
+  "node": true,
+  "browser": true,
+  "undef": true,
+  "nonbsp": true,
+  "quotmark": "single",
+  "curly": true,
+  "globalstrict": true,
+  "eqeqeq": true,
+  "predef": ["angular", "confirm"]
+}
