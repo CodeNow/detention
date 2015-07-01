@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "grunt": "grunt",
+    "grunt": "./node_modules/.bin/grunt",
     "start": "node ./bin/www"
   },
   "dependencies": {
