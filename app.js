@@ -4,6 +4,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
+var queryString = require('querystring');
 
 var app = express();
 
@@ -17,8 +18,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.route('/').get(function (req, res, next) {
-  if (req.query.type) {
-    var page = req.query.type;
+  if (req.headers['x-runnable-query']) {
+    var data = queryString.parse(req.headers['x-runnable-query']);
+    var page = data.type;
     var options = {};
     [
       'status',
@@ -29,7 +31,7 @@ app.route('/').get(function (req, res, next) {
       'instanceName',
       'ports'
     ].forEach(function (option) {
-        var value = req.query[option];
+        var value = data[option];
         if (value && value.indexOf('[') === 0) {
           value = JSON.parse(value);
         }
