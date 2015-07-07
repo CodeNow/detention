@@ -10,10 +10,10 @@ html(
       content = "width=device-width, initial-scale=1"
       name = "viewport"
     )
-    title Uh oh
+    title #{locals.localVersion}
     //- css
     link(
-      href = "/stylesheets/error.css?v=#{locals.version}"
+      href = "/stylesheets/error.css?v=#{locals.localVersion}"
       media = "screen"
       rel = "stylesheet"
     )
