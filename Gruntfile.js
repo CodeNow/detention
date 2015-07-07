@@ -18,7 +18,7 @@ module.exports = function(grunt) {
           browsers: ['last 2 versions']
         },
         files: {
-          'client/build/css/error.css' : 'client/build/css/error.css'
+          'public/stylesheets/error.css' : 'public/stylesheets/error.css'
         }
       }
     },

@@ -2,24 +2,30 @@
 
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 
+var version = require('./package.json').version;
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+var locals = {
+  version: version
+};
+
 // uncomment after placing your favicon in /public
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.route('/').get(function (req, res, next) {
+app.route('/*').get(function (req, res, next) {
+  var options = {
+    localVersion: version
+  };
   if (req.query.type) {
     var page = req.query.type;
-    var options = {};
     [
       'status',
       'branchName',
@@ -37,7 +43,7 @@ app.route('/').get(function (req, res, next) {
     });
     res.render('pages/' + page, options);
   } else {
-    res.render('pages/invalid');
+    res.render('pages/invalid', options);
   }
 });
 
@@ -53,7 +59,9 @@ app.use(function(req, res, next) {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.render('pages/invalid');
+  res.render('pages/invalid', {
+    localVersion: version
+  });
 });
 
 
