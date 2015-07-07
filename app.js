@@ -4,7 +4,6 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
-var queryString = require('querystring');
 
 var version = require('./package').version;
 var app = express();
@@ -23,9 +22,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.route('/').get(function (req, res, next) {
-  if (req.headers['x-runnable-query']) {
-    var data = queryString.parse(req.headers['x-runnable-query']);
-    var page = data.type;
+  if (req.query.type) {
+    var page = req.query.type;
     var options = {};
     [
       'status',
@@ -36,12 +34,12 @@ app.route('/').get(function (req, res, next) {
       'instanceName',
       'ports'
     ].forEach(function (option) {
-        var value = data[option];
-        if (value && value.indexOf('[') === 0) {
-          value = JSON.parse(value);
-        }
-        options[option] = value;
-      });
+      var value = req.query[option];
+      if (value && value.indexOf('[') === 0) {
+        value = JSON.parse(value);
+      }
+      options[option] = value;
+    });
     res.render('pages/' + page, options);
   } else {
     res.render('pages/invalid');
