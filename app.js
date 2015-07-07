@@ -6,11 +6,16 @@ var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var queryString = require('querystring');
 
+var version = require('./package').version;
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+var locals = {
+  version: version
+};
 
 // uncomment after placing your favicon in /public
 app.use(bodyParser.json());
