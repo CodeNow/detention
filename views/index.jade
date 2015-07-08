@@ -32,6 +32,20 @@ html(
         var clean_uri = uri.substring(0, uri.indexOf("?"));
         window.history.replaceState({}, document.title, clean_uri);
 
+      // This is for redirecting to a relative port
+      document.addEventListener('click', function(event) {
+        var target = event.target;
+        if (target.tagName.toLowerCase() == 'a')
+        {
+          var port = target.getAttribute('href').match(/^:(\d+)(.*)/);
+          if (port)
+          {
+            target.href = port[2];
+            target.port = port[1];
+          }
+        }
+      }, false);
+
 
   body.error-wrapper
     .error-content
