@@ -37,7 +37,7 @@ app.route('/*').get(function (req, res, next) {
       options[option] = req.query[option];
     });
     if (req.query.ports) {
-      var value = JSON.parse(req.query.ports);
+      var value = req.query.ports;
       if (!Array.isArray(value)) {
         value = [value];
       }
