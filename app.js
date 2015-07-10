@@ -32,15 +32,17 @@ app.route('/*').get(function (req, res, next) {
       'redirectUrl',
       'containerUrl',
       'ownerName',
-      'instanceName',
-      'ports'
+      'instanceName'
     ].forEach(function (option) {
-      var value = req.query[option];
-      if (value && value.indexOf('[') === 0) {
-        value = JSON.parse(value);
-      }
-      options[option] = value;
+      options[option] = req.query[option];
     });
+    if (req.query.ports) {
+      var value = req.query.ports;
+      if (!Array.isArray(value)) {
+        value = [value];
+      }
+      options.ports = value;
+    }
     res.render('pages/' + page, options);
   } else {
     res.render('pages/invalid', options);
