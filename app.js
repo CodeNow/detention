@@ -22,7 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.route('/*').get(function (req, res, next) {
   var options = {
-    localVersion: version
+    localVersion: version,
+    absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
   };
   if (req.query.type) {
     var page = req.query.type;
