@@ -44,6 +44,11 @@ app.route('/*').get(function (req, res, next) {
       }
       options.ports = value;
     }
+    if (options.status === 'buildFailed') {
+      options.status = 'has failed it\'s build';
+    } else {
+      options.status = 'is ' + options.status;
+    }
     res.render('pages/' + page, options);
   } else {
     res.render('pages/invalid', options);
