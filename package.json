@@ -1,6 +1,6 @@
 {
   "name": "detention",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "grunt": "./node_modules/.bin/grunt",
