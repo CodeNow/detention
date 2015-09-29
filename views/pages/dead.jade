@@ -1,7 +1,7 @@
 extends ../index.jade
 block content
   //- h1 and p elements should say whether container is building, stopped, or crashed.
-  h1.h1 Container #{status}
+  h1.h1 Container #{headerText}
   p.p The container for #{''}
     strong.strong #{branchName}
     | #{''} #{status}.
@@ -10,4 +10,4 @@ block content
     - with CMD logs open if container is stopped or crashed
   a.link(
     href = "//runnable.io/#{ownerName}/#{instanceName}"
-  ) View logs in Runnable
+  ) View logs
