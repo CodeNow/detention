@@ -60,6 +60,7 @@ app._fetchInstance = function (req, res, next) {
   }, 'api._fetchInstance');
   if (!req.query.shortHash) {
     // only valid occurance if login error
+    log.trace('_fetchInstance !shortHash');
     return next();
   }
   req.instance = superUser.fetchInstance(req.query.shortHash, function (err) {
