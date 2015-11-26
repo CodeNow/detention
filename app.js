@@ -97,10 +97,10 @@ app.route('/*').get(app._fetchInstance, function processInstance (req, res, next
   });
 
   if (req.query.type === 'signin') {
-    log.trace('processInstance type signin')
+    log.trace('processInstance type signin');
     return res.render('pages/signin', options);
   } else if (req.query.type === 'not_running') {
-    log.trace('processInstance type !signin')
+    log.trace('processInstance type !signin');
 
     if (!req.instance) {
       log.error('instance not found');
