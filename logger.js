@@ -2,38 +2,20 @@
  * @module lib/logger
  */
 'use strict';
-require('./loadenv.js');
 
 var bunyan = require('bunyan');
 var envIs = require('101/env-is');
-var keypather = require('keypather')();
+var path = require('path');
 var put = require('101/put');
 
 var serializers = put(bunyan.stdSerializers, {
-  tx: function () {
-    var runnableData = keypather.get(process.domain, 'runnableData');
-    if (!runnableData) {
-      runnableData = {};
-    }
-    var date = new Date();
-    if (runnableData.txTimestamp) {
-      // Save delta of time from previous log to this log
-      runnableData.txMSDelta = date.valueOf() - runnableData.txTimestamp.valueOf();
-    }
-    runnableData.txTimestamp = date;
-    if (runnableData.reqStart) {
-      // Milliseconds from request start
-      runnableData.txMSFromReqStart = runnableData.txTimestamp.valueOf() -
-        runnableData.reqStart.valueOf();
-    }
-    return runnableData;
-  }
+  // put serializers here
 });
 
-module.exports = bunyan.createLogger({
+var logger = bunyan.createLogger({
   name: 'detention',
   streams: [{
-    level: process.env.LOG_LEVEL_STDOUT,
+    level: process.env.LOG_LEVEL_STDOUT || 'trace',
     stream: process.stdout
   }],
   serializers: serializers,
@@ -41,5 +23,15 @@ module.exports = bunyan.createLogger({
   src: !envIs('production'),
   environment: process.env.NODE_ENV
 });
+
+/**
+ * Return a new child bunyan instance
+ * @param {String} namespace
+ */
+module.exports = function (namespace) {
+  return logger.child({
+    module: path.relative(process.cwd(), namespace)
+  });
+}
 
 module.exports._serializers = serializers;

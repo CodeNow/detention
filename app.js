@@ -3,13 +3,14 @@
  */
 'use strict';
 
+var Runnable = require('runnable');
+var bodyParser = require('body-parser');
 var express = require('express');
 var path = require('path');
-var bodyParser = require('body-parser');
-var Runnable = require('runnable');
+var put = require('101/put');
 
 var app = express();
-var log = require('logger')(__filename).log;
+var log = require('./logger')(__filename);
 var version = require('./package.json').version;
 
 // view engine setup
@@ -33,7 +34,7 @@ var superUser = new Runnable(process.env.API_HOST, {
  * Authenticate with API as super user
  * Must invoke before server begins listening
  */
-api.loginSuperUser = function (cb) {
+app.loginSuperUser = function (cb) {
   var logData = {
     tx: true
   };
@@ -53,7 +54,7 @@ api.loginSuperUser = function (cb) {
 /**
  * Fetch Instance resource from API
  */
-api._fetchInstance = function (req, res, next) {
+app._fetchInstance = function (req, res, next) {
   log.info({
     shortHash: req.query.shortHash
   }, 'api._fetchInstance');
@@ -77,7 +78,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.route('/*').get(api._fetchInstance, function (req, res, next) {
+app.route('/*').get(app._fetchInstance, function (req, res, next) {
   var options = {
     localVersion: version,
     absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
