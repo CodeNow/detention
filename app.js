@@ -54,6 +54,22 @@ api.loginSuperUser = function (cb) {
  * Fetch Instance resource from API
  */
 api._fetchInstance = function (req, res, next) {
+  log.info({
+    shortHash: req.query.shortHash
+  }, 'api._fetchInstance');
+  if (!req.query.shortHash) {
+    // only valid occurance if login error
+    return next();
+  }
+  req.instance = superUser.fetchInstance(req.query.shortHash, function (err) {
+    if (err) {
+      log.error({
+        err: err
+      }, '_fetchInstance superUser.fetchInstance error');
+    }
+    log.trace('_fetchInstance superUser.fetchInstance success');
+    next();
+  });
 };
 
 // uncomment after placing your favicon in /public

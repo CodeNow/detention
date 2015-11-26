@@ -3,8 +3,9 @@
  */
 'use strict';
 
-var Lab = require('lab');
 var Code = require('code');
+var Lab = require('lab');
+var sinon = require('sinon');
 
 var lab = exports.lab = Lab.script();
 
