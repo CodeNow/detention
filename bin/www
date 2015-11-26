@@ -4,9 +4,21 @@
  * Module dependencies.
  */
 
-var app = require('../app');
 var debug = require('debug')('detention:server');
+var hasKeypaths = require('101/has-keypaths');
 var http = require('http');
+
+var app = require('../app');
+
+var requiredEnvKeys = [
+  'HELLO_RUNNABLE_GITHUB_TOKEN',
+  'API_HOST'
+];
+if (!hasKeypaths(process.env, requiredEnvKeys)) {
+  console.log('Missing required ENV keys');
+  console.log(requiredEnvKeys);
+  process.exit(1);
+}
 
 /**
  * Get port from environment and store in Express.
