@@ -6,6 +6,7 @@
 var Runnable = require('runnable');
 var bodyParser = require('body-parser');
 var express = require('express');
+var keypather = require('keypather')();
 var path = require('path');
 var put = require('101/put');
 
@@ -79,20 +80,86 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.route('/*').get(app._fetchInstance, function (req, res, next) {
+app.route('/*').get(app._fetchInstance, function processInstance (req, res, next) {
+  log.info({
+    query: req.query
+  }, 'processInstance');
   var options = {
     localVersion: version,
     absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
   };
-  if (req.query.type) {
-    var page = req.query.type;
-    [
-      'status',
-      'redirectUrl',
-      'shortHash'
-    ].forEach(function (option) {
-      options[option] = req.query[option];
-    });
+
+  [
+    'redirectUrl',
+    'shortHash'
+  ].forEach(function (option) {
+    options[option] = req.query[option];
+  });
+
+  if (req.query.type === 'signin') {
+    log.trace('processInstance type signin')
+    return res.render('pages/signin', options);
+  } else if (req.query.type === 'not_running') {
+    log.trace('processInstance type !signin')
+
+    if (!req.instance) {
+      log.error('instance not found');
+      return next(new Error('instance not found'));
+    }
+
+    options.branchName = keypather.get(req.instance, 'attrs.contextVersion.branch');
+    // Temp missing pending resolution of SAN-3018
+    // https://runnable.atlassian.net/browse/SAN-3018
+    options.instanceName = keypather.get(req.instance, 'attrs.contextVersion.branch');
+    options.ownerName = keypather.get(req.instance, 'attrs.owner.username');
+
+    // container state error pages.
+    // - Not running (building, starting, crashed)
+    // - Running, but unresponsive
+    var status = req.instance.status();
+    log.trace({
+      status: status,
+      options: options
+    }, 'processInstance instance status');
+
+    options.status = status;
+    switch(status) {
+      case 'stopped':
+      case 'crashed':
+      case 'stopping':
+        options.headerText = 'is ' + status;
+        res.render('pages/dead', options);
+        break;
+      case 'running':
+        // The instance could have started after Navi fetched it and proxied to detention.
+        // Might not be the best idea to trigger a refresh, could easily result in user-unfriendly
+        // infinite redirect loops. Better to display an error page prompting user to refresh?
+        options.headerText = 'is running';
+        res.render('pages/dead', options);
+        break;
+      case 'buildFailed':
+        options.headerText = 'build failed';
+        res.render('pages/dead', options);
+        break;
+      case 'building':
+        options.headerText = 'is building';
+        res.render('pages/dead', options);
+        break;
+      case 'neverStarted':
+      case 'starting':
+        options.headerText = 'is starting';
+        res.render('pages/dead', options);
+        break;
+      case 'unknown':
+        options.headerText = 'unknown';
+        res.render('pages/dead', options);
+        break;
+    }
+  } else {
+    // ports, unresponsive
+  }
+
+/*
     if (req.query.ports) {
       var value = req.query.ports;
       if (!Array.isArray(value)) {
@@ -109,10 +176,11 @@ app.route('/*').get(app._fetchInstance, function (req, res, next) {
         options.status = 'is ' + options.status;
       }
     }
-    res.render('pages/' + page, options);
   } else {
     res.render('pages/invalid', options);
   }
+*/
+
 });
 
 // catch 404 and forward to error handler
