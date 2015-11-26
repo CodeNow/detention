@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "grunt": "./node_modules/.bin/grunt",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "lab -c -v"
   },
   "dependencies": {
     "101": "^1.2.0",
