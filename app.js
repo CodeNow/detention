@@ -1,3 +1,6 @@
+/**
+ * @module app
+ */
 'use strict';
 
 var express = require('express');
@@ -27,7 +30,8 @@ var superUser = new Runnable(process.env.API_HOST, {
 });
 
 /**
- *
+ * Authenticate with API as super user
+ * Must invoke before server begins listening
  */
 api.loginSuperUser = function (cb) {
   var logData = {
@@ -46,12 +50,18 @@ api.loginSuperUser = function (cb) {
   });
 };
 
+/**
+ * Fetch Instance resource from API
+ */
+api._fetchInstance = function (req, res, next) {
+};
+
 // uncomment after placing your favicon in /public
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.route('/*').get(function (req, res, next) {
+app.route('/*').get(api._fetchInstance, function (req, res, next) {
   var options = {
     localVersion: version,
     absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
