@@ -13,4 +13,6 @@ var expect = Code.expect;
 var it = lab.test;
 
 describe('app.js', function () {
+  describe('app.loginSuperUser', function () {
+  });
 });
