@@ -3,9 +3,11 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var Runnable = require('runnable');
 
-var version = require('./package.json').version;
 var app = express();
+var log = require('logger')(__filename).log;
+var version = require('./package.json').version;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -13,6 +15,35 @@ app.set('view engine', 'jade');
 
 var locals = {
   version: version
+};
+
+// this is used for hello runnable user so we only have to login once
+var superUser = new Runnable(process.env.API_HOST, {
+  requestDefaults: {
+    headers: {
+      'user-agent': 'detention-root'
+    },
+  }
+});
+
+/**
+ *
+ */
+api.loginSuperUser = function (cb) {
+  var logData = {
+    tx: true
+  };
+  log.info(logData, 'api.loginSuperUser');
+  superUser.githubLogin(process.env.HELLO_RUNNABLE_GITHUB_TOKEN, function (err) {
+    if (err) {
+      log.error(put({
+        err: err
+      }, logData), 'loginSuperUser error');
+    } else {
+      log.trace(logData, 'loginSuperUser success');
+    }
+    cb(err);
+  });
 };
 
 // uncomment after placing your favicon in /public
@@ -29,11 +60,8 @@ app.route('/*').get(function (req, res, next) {
     var page = req.query.type;
     [
       'status',
-      'branchName',
       'redirectUrl',
-      'containerUrl',
-      'ownerName',
-      'instanceName'
+      'shortHash'
     ].forEach(function (option) {
       options[option] = req.query[option];
     });
