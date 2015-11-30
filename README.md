@@ -1,5 +1,10 @@
-# detention
-Handles our 404
+Detention
+=========
+
+### Navi request general error message response producing service.
+
+Navi will proxy to this service in the event of several types of error scenarios. Detention fetches
+the status of an instance from API and produces an error HTML response page.
 
 script to push it
 ```
