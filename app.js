@@ -124,22 +124,24 @@ app._processNaviError = function (req, res, next) {
     options[option] = req.query[option];
   });
 
-  if (req.query.type === 'signin') {
-    log.trace('processNaviError type signin');
-    return res.render('pages/signin', options);
-  } else if (req.query.type === 'not_running') {
-    log.trace('processNaviError type !signin');
-
-    if (!req.instance) {
-      log.error('instance not found');
-      return next(new Error('instance not found'));
-    }
-
+  if (req.instance) {
     options.branchName = keypather.get(req.instance, 'attrs.contextVersion.branch');
     // Temp missing pending resolution of SAN-3018
     // https://runnable.atlassian.net/browse/SAN-3018
     options.instanceName = keypather.get(req.instance, 'attrs.contextVersion.branch');
     options.ownerName = keypather.get(req.instance, 'attrs.owner.username');
+    var ports = keypather.get(req.instance, 'attrs.container.ports');
+    options.ports = Object.keys(ports).map(function (portKey) {
+      // Ex: '3000/tcp' --> '3000'
+      return portKey.replace(/\/tcp$/, '');
+    });
+  }
+
+  if (req.query.type === 'signin') {
+    log.trace('processNaviError type signin');
+    return res.render('pages/signin', options);
+  } else if (req.query.type === 'not_running') {
+    log.trace('processNaviError type not_running');
 
     // container state error pages.
     // - Not running (building, starting, crashed)
@@ -184,6 +186,7 @@ app._processNaviError = function (req, res, next) {
         break;
     }
   } else if (req.query.type === 'ports'){
+    log.trace('processNaviError type ports');
     /*
      * Currently not implemented, might be bundled into 'unresponsive'
      *
@@ -197,6 +200,7 @@ app._processNaviError = function (req, res, next) {
      * Anand if you read this Monday morning lets chat about it at 3pm
      */
   } else if (req.query.type === 'unresponsive'){
+    log.trace('processNaviError type unresponsive');
     res.render('pages/unresponsive', options);
   }
 };
