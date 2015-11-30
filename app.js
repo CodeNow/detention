@@ -16,10 +16,17 @@ var app = express();
 var log = require('./logger')(__filename);
 var version = require('./package.json').version;
 
+// valid Detention request types (val for req validation)
+var validDetentionTypes = [
+  'not_running',
+  'ports',
+  'signin',
+  'unresponsive'
+];
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
 
 assign(app.locals, {
   localVersionversion: version,
@@ -57,17 +64,33 @@ app.loginSuperUser = function (cb) {
 };
 
 /**
+ * Validate query parameters
+ */
+app._validateRequest = function (req, res, next) {
+  log.info('app._validateRequest');
+  if (!req.query.shortHash && req.query.type !== 'signin') {
+    log.trace('_validateRequest !shortHash');
+    // TODO?: switch to createAndReport
+    return next(ErrorCat.create(500, 'instance shortHash required'));
+  }
+  if (~validDetentionTypes.indexOf(req.query.type)) {
+    // only valid occurance if login error
+    log.trace('_validateRequest !type');
+    // TODO?: switch to createAndReport
+    return next(ErrorCat.create(500, 'invalid request type'));
+  }
+};
+
+/**
  * Fetch Instance resource from API
  */
 app._fetchInstance = function (req, res, next) {
   log.info({
     shortHash: req.query.shortHash
   }, 'api._fetchInstance');
-  if (!req.query.shortHash) {
-    // only valid occurance if login error
-    log.trace('_fetchInstance !shortHash');
-    // TODO?: switch to createAndReport
-    return next(ErrorCat.create(500, 'instance shortHash required'));
+  if (req.query.type === 'signin') {
+    log.trace('_fetchInstance signin bypass');
+    return next();
   }
   req.instance = superUser.fetchInstance(req.query.shortHash, function (err) {
     if (err) {
@@ -81,13 +104,12 @@ app._fetchInstance = function (req, res, next) {
     next();
   });
 };
-
 // uncomment after placing your favicon in /public
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.route('/*').get(app._fetchInstance, function processInstance (req, res, next) {
+/**
+ * Resolve instance status and render + return relevant error message html page
+ */
+app._processNaviError = function (req, res, next) {
   log.info({
     query: req.query
   }, 'processInstance');
@@ -185,7 +207,17 @@ app.route('/*').get(app._fetchInstance, function processInstance (req, res, next
   }
 */
 
-});
+};
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.route('/*').get(
+  app._validateRequest,
+  app._fetchInstance,
+  app._processNaviError
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -193,8 +225,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-// error handlers
 
 // production error handler
 // no stacktraces leaked to user
