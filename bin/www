@@ -12,7 +12,7 @@ var app = require('../app');
 
 var requiredEnvKeys = [
   'HELLO_RUNNABLE_GITHUB_TOKEN',
-  'API_HOST'
+  'API_HOSTNAME'
 ];
 if (!hasKeypaths(process.env, requiredEnvKeys)) {
   console.log('Missing required ENV keys');
