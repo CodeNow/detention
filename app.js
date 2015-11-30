@@ -5,6 +5,7 @@
 
 var ErrorCat = require('error-cat');
 var Runnable = require('runnable');
+var assign = require('101/assign');
 var bodyParser = require('body-parser');
 var express = require('express');
 var keypather = require('keypather')();
@@ -19,7 +20,8 @@ var version = require('./package.json').version;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.locals({
+
+assign(app.locals, {
   localVersionversion: version,
   absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
 });
