@@ -183,32 +183,19 @@ app._processNaviError = function (req, res, next) {
         res.render('pages/dead', options);
         break;
     }
-  } else {
-    // ports, unresponsive
+  } else if (req.query.type === 'ports'){
+    /*
+     * Currently not implemented, might be bundled into 'unresponsive'
+     *
+     * Userland hipache will only route to navi if a request is made to an elastic url on a port
+     * that's explicitly set on the instance (we set hipache redis entries when ports are exposed)
+     * otherwise userland-hipache will return an error page due to a lack of a redis entry.
+     *
+     * Anand if you read this Monday morning lets chat about it at 3pm
+     */
+  } else if (req.query.type === 'unresponsive'){
+    res.render('pages/dead', options);
   }
-
-/*
-    if (req.query.ports) {
-      var value = req.query.ports;
-      if (!Array.isArray(value)) {
-        value = [value];
-      }
-      options.ports = value;
-    }
-    options.headerText = options.status;
-    if (options.status) {
-      if (options.status === 'buildFailed') {
-        options.headerText = 'build failed.';
-        options.status = 'failed to build';
-      } else {
-        options.status = 'is ' + options.status;
-      }
-    }
-  } else {
-    res.render('pages/invalid', options);
-  }
-*/
-
 };
 
 app.use(bodyParser.json());
