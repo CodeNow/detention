@@ -71,6 +71,8 @@ app._fetchInstance = function (req, res, next) {
       log.error({
         err: err
       }, '_fetchInstance superUser.fetchInstance error');
+      // TODO?: switch to createAndReport
+      return next(ErrorCat.create(404, 'instance not found'));
     }
     log.trace('_fetchInstance superUser.fetchInstance success');
     next();
