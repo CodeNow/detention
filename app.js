@@ -19,9 +19,10 @@ var version = require('./package.json').version;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-var locals = {
-  version: version
-};
+app.locals({
+  localVersionversion: version,
+  absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
+});
 
 // this is used for hello runnable user so we only have to login once
 var superUser = new Runnable(process.env.API_HOST, {
@@ -88,10 +89,7 @@ app.route('/*').get(app._fetchInstance, function processInstance (req, res, next
   log.info({
     query: req.query
   }, 'processInstance');
-  var options = {
-    localVersion: version,
-    absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
-  };
+  var options = {};
 
   [
     'redirectUrl',
@@ -199,9 +197,7 @@ app.use(function(req, res, next) {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.render('pages/invalid', {
-    localVersion: version
-  });
+  res.render('pages/invalid', {});
 });
 
 module.exports = app;
