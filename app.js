@@ -191,10 +191,13 @@ app._processNaviError = function (req, res, next) {
      * that's explicitly set on the instance (we set hipache redis entries when ports are exposed)
      * otherwise userland-hipache will return an error page due to a lack of a redis entry.
      *
+     * Probably could fix by patching Hipache or perhaps reading the manual to see if there's a
+     * some kind of forward-for-all-ports functionality
+     *
      * Anand if you read this Monday morning lets chat about it at 3pm
      */
   } else if (req.query.type === 'unresponsive'){
-    res.render('pages/dead', options);
+    res.render('pages/unresponsive', options);
   }
 };
 
