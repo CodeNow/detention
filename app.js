@@ -114,7 +114,7 @@ app._fetchInstance = function (req, res, next) {
 app._processNaviError = function (req, res, next) {
   log.info({
     query: req.query
-  }, 'processInstance');
+  }, 'processNaviError');
   var options = {};
 
   [
@@ -125,10 +125,10 @@ app._processNaviError = function (req, res, next) {
   });
 
   if (req.query.type === 'signin') {
-    log.trace('processInstance type signin');
+    log.trace('processNaviError type signin');
     return res.render('pages/signin', options);
   } else if (req.query.type === 'not_running') {
-    log.trace('processInstance type !signin');
+    log.trace('processNaviError type !signin');
 
     if (!req.instance) {
       log.error('instance not found');
@@ -148,7 +148,7 @@ app._processNaviError = function (req, res, next) {
     log.trace({
       status: status,
       options: options
-    }, 'processInstance instance status');
+    }, 'processNaviError instance status');
 
     options.status = status;
     switch(status) {
