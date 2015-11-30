@@ -73,12 +73,14 @@ app._validateRequest = function (req, res, next) {
     // TODO?: switch to createAndReport
     return next(ErrorCat.create(500, 'instance shortHash required'));
   }
-  if (~validDetentionTypes.indexOf(req.query.type)) {
+  if (!~validDetentionTypes.indexOf(req.query.type)) {
     // only valid occurance if login error
     log.trace('_validateRequest !type');
     // TODO?: switch to createAndReport
     return next(ErrorCat.create(500, 'invalid request type'));
   }
+  log.trace('_validateRequest success');
+  next();
 };
 
 /**
