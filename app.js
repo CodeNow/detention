@@ -3,6 +3,7 @@
  */
 'use strict';
 
+var ErrorCat = require('error-cat');
 var Runnable = require('runnable');
 var bodyParser = require('body-parser');
 var express = require('express');
@@ -62,7 +63,8 @@ app._fetchInstance = function (req, res, next) {
   if (!req.query.shortHash) {
     // only valid occurance if login error
     log.trace('_fetchInstance !shortHash');
-    return next();
+    // TODO?: switch to createAndReport
+    return next(ErrorCat.create(500, 'instance shortHash required'));
   }
   req.instance = superUser.fetchInstance(req.query.shortHash, function (err) {
     if (err) {
@@ -199,6 +201,5 @@ app.use(function(err, req, res, next) {
     localVersion: version
   });
 });
-
 
 module.exports = app;
