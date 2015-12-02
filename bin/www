@@ -22,8 +22,9 @@ if (!hasKeypaths(process.env, requiredEnvKeys)) {
     env: process.env
   }, 'Missing required ENV keys');
   // send to rollbar
-  ErrorCat.report(new Error('Detention missing required ENV values'));
-  process.exit(1);
+  ErrorCat.report(new Error('Detention missing required ENV values'), null, function () {
+    process.exit(1);
+  });
 }
 
 /**
