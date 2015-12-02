@@ -5,6 +5,7 @@
 
 var Code = require('code');
 var Lab = require('lab');
+var noop = require('101/noop');
 var sinon = require('sinon');
 
 var lab = exports.lab = Lab.script();
@@ -156,5 +157,249 @@ describe('app.js', function () {
         done();
       });
     });
+  });
+
+  describe('app._processNaviError', function (done) {
+    var instance;
+    beforeEach(function (done) {
+      instance = {
+        attrs: {
+          lowerName: 'api',
+          owner: {
+            username: 'casey'
+          },
+          contextVersion: {
+            branch: 'master'
+          },
+          container: {
+            ports: {
+              '80/tcp': {}
+            }
+          }
+        }
+      };
+      done();
+    });
+
+    afterEach(function (done) {
+      done();
+    });
+
+    it('should render signin page if error type is signin', function (done) {
+      var req = {
+        instance: instance,
+        query: {
+          type: 'signin',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/signin');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80']
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render not_running state stopped', function (done) {
+      instance.status = function () {
+        return 'stopped';
+      };
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: 'is stopped'
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render not_running state running', function (done) {
+      instance.status = function () {
+        return 'running';
+      };
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: 'is running'
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render not_running state buildFailed', function (done) {
+      instance.status = function () {
+        return 'buildFailed';
+      };
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: 'build failed'
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render not_running state building', function (done) {
+      instance.status = function () {
+        return 'building';
+      };
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: 'is building'
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render not_running state starting', function (done) {
+      instance.status = function () {
+        return 'neverStarted';
+      };
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: 'is starting'
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render not_running state starting', function (done) {
+      instance.status = function () {
+        return 'neverStarted';
+      };
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: 'is starting'
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
+    it('should render unresponsive error if type is unresponsive', function (done) {
+      var req = {
+        instance: instance,
+        query: {
+          type: 'unresponsive',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        render: function (page, opts) {
+          expect(page).to.equal('pages/unresponsive');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80']
+          });
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
+
   });
 });

@@ -128,7 +128,7 @@ app._processNaviError = function (req, res, next) {
     options.branchName = keypather.get(req.instance, 'attrs.contextVersion.branch');
     // Temp missing pending resolution of SAN-3018
     // https://runnable.atlassian.net/browse/SAN-3018
-    options.instanceName = keypather.get(req.instance, 'attrs.contextVersion.branch');
+    options.instanceName = keypather.get(req.instance, 'attrs.lowerName');
     options.ownerName = keypather.get(req.instance, 'attrs.owner.username');
     var ports = keypather.get(req.instance, 'attrs.container.ports');
     options.ports = Object.keys(ports).map(function (portKey) {
