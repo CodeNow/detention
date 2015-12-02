@@ -140,7 +140,8 @@ app._processNaviError = function (req, res, next) {
   if (req.query.type === 'signin') {
     log.trace('processNaviError type signin');
     return res.render('pages/signin', options);
-  } else if (req.query.type === 'not_running') {
+  }
+  if (req.query.type === 'not_running') {
     log.trace('processNaviError type not_running');
 
     // container state error pages.
