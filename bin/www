@@ -9,14 +9,17 @@ var hasKeypaths = require('101/has-keypaths');
 var http = require('http');
 
 var app = require('../app');
+var log = require('../logger')(__filename);
 
 var requiredEnvKeys = [
   'HELLO_RUNNABLE_GITHUB_TOKEN',
   'API_HOSTNAME'
 ];
 if (!hasKeypaths(process.env, requiredEnvKeys)) {
-  console.log('Missing required ENV keys');
-  console.log(requiredEnvKeys);
+  log.error({
+    requiredEnvKeys: requiredEnvKeys,
+    env: process.env
+  }, 'Missing required ENV keys');
   process.exit(1);
 }
 
