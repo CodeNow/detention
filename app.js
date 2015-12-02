@@ -13,7 +13,7 @@ var path = require('path');
 var put = require('101/put');
 
 var app = express();
-var log = require('./logger')(__filename);
+var log = app.log = require('./logger')(__filename);
 var version = require('./package.json').version;
 
 // valid Detention request types (val for req validation)
@@ -34,7 +34,7 @@ assign(app.locals, {
 });
 
 // this is used for hello runnable user so we only have to login once
-var superUser = new Runnable(process.env.API_HOSTNAME, {
+var superUser = app.superUser = new Runnable(process.env.API_HOSTNAME, {
   requestDefaults: {
     headers: {
       'user-agent': 'detention-root'
