@@ -186,7 +186,9 @@ app._processNaviError = function (req, res, next) {
         res.render('pages/dead', options);
         break;
     }
-  } else if (req.query.type === 'ports'){
+    return;
+  }
+  if (req.query.type === 'ports'){
     log.trace('processNaviError type ports');
     /*
      * Currently not implemented, might be bundled into 'unresponsive'
@@ -200,9 +202,12 @@ app._processNaviError = function (req, res, next) {
      *
      * Anand if you read this Monday morning lets chat about it at 3pm
      */
-  } else if (req.query.type === 'unresponsive'){
+    return;
+  }
+  if (req.query.type === 'unresponsive'){
     log.trace('processNaviError type unresponsive');
     res.render('pages/unresponsive', options);
+    return;
   }
 };
 
