@@ -30,7 +30,7 @@ app.set('view engine', 'jade');
 
 assign(app.locals, {
   localVersionversion: version,
-  absoluteUrl: process.env.ABSOLUTE_URL || 'detention.runnable.io'
+  absoluteUrl: process.env.ABSOLUTE_URL
 });
 
 // this is used for hello runnable user so we only have to login once
