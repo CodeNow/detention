@@ -8,17 +8,13 @@ var envIs = require('101/env-is');
 var path = require('path');
 var put = require('101/put');
 
-var serializers = put(bunyan.stdSerializers, {
-  // put serializers here
-});
-
 var logger = bunyan.createLogger({
   name: 'detention',
   streams: [{
     level: process.env.LOG_LEVEL_STDOUT || 'trace',
     stream: process.stdout
   }],
-  serializers: serializers,
+  serializers: bunyan.stdSerializers,
   // DO NOT use src in prod, slow
   src: !envIs('production'),
   environment: process.env.NODE_ENV
