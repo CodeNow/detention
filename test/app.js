@@ -57,4 +57,44 @@ describe('app.js', function () {
       })
     });
   });
+
+  describe('app._validateRequest', function () {
+    it('should next with error if non-signin error with no shortHash', function (done) {
+      var req = {
+        query: {
+          type: 'not_running' // !signin
+        }
+      };
+      app._validateRequest(req, {}, function (err) {
+        expect(err.message).to.equal('instance shortHash required');
+        done();
+      });
+    });
+
+    it('should next with error if invalid query.type value', function (done) {
+      var req = {
+        query: {
+          shortHash: '5555',
+          type: '*^^$^#&$@'
+        }
+      };
+      app._validateRequest(req, {}, function (err) {
+        expect(err.message).to.equal('invalid request type');
+        done();
+      });
+    });
+
+    it('should next without error for valid request', function (done) {
+      var req = {
+        query: {
+          shortHash: '5555',
+          type: 'not_running'
+        }
+      };
+      app._validateRequest(req, {}, function (err) {
+        expect(err).to.be.undefined();
+        done();
+      });
+    });
+  });
 });
