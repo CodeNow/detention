@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+var ErrorCat = require('error-cat');
 var debug = require('debug')('detention:server');
 var hasKeypaths = require('101/has-keypaths');
 var http = require('http');
@@ -20,6 +21,8 @@ if (!hasKeypaths(process.env, requiredEnvKeys)) {
     requiredEnvKeys: requiredEnvKeys,
     env: process.env
   }, 'Missing required ENV keys');
+  // send to rollbar
+  ErrorCat.report(new Error('Detention missing required ENV values'));
   process.exit(1);
 }
 
