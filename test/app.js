@@ -97,4 +97,64 @@ describe('app.js', function () {
       });
     });
   });
+
+  describe('app._fetchInstance', function () {
+    beforeEach(function (done) {
+      sinon.stub(app.superUser, 'fetchInstance');
+      done();
+    });
+
+    afterEach(function (done) {
+      app.superUser.fetchInstance.restore();
+      done();
+    });
+
+    it('should next without fetching if query is signin', function (done) {
+      var req = {
+        query: {
+          type: 'signin'
+        }
+      };
+      app._fetchInstance(req, {}, function (err) {
+        expect(err).to.be.undefined();
+        sinon.assert.notCalled(app.superUser.fetchInstance);
+        done();
+      });
+    });
+
+    it('should next with error if fetchInstance yields an error', function (done) {
+      var instance = {};
+      app.superUser.fetchInstance.returns(instance).yieldsAsync(new Error('error'));
+      var req = {
+        query: {
+          shortHash: 'axcde',
+          type: 'not_running'
+        }
+      };
+      app._fetchInstance(req, {}, function (err) {
+        expect(err.message).to.equal('instance not found');
+        sinon.assert.callCount(app.superUser.fetchInstance, 1);
+        sinon.assert.calledWith(app.superUser.fetchInstance, 'axcde');
+        done();
+      });
+    });
+
+    it('should fetch instance and assign to req.instance, then next', function (done) {
+      var instance = {};
+      app.superUser.fetchInstance.returns(instance).yieldsAsync();
+      var req = {
+        query: {
+          shortHash: 'axcde',
+          type: 'not_running'
+        }
+      };
+      app._fetchInstance(req, {}, function (err) {
+        expect(err).to.be.undefined();
+        sinon.assert.callCount(app.superUser.fetchInstance, 1);
+        sinon.assert.calledWith(app.superUser.fetchInstance, 'axcde');
+        expect(req.instance).to.equal(instance);
+        done();
+      });
+    });
+  });
 });
