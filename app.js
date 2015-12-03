@@ -131,10 +131,16 @@ app._processNaviError = function (req, res, next) {
     options.instanceName = keypather.get(req.instance, 'attrs.lowerName');
     options.ownerName = keypather.get(req.instance, 'attrs.owner.username');
     var ports = keypather.get(req.instance, 'attrs.container.ports');
-    options.ports = Object.keys(ports).map(function (portKey) {
-      // Ex: '3000/tcp' --> '3000'
-      return portKey.replace(/\/tcp$/, '');
-    });
+    if (ports) {
+      options.ports = Object.keys(ports).map(function (portKey) {
+        // Ex: '3000/tcp' --> '3000'
+        return portKey.replace(/\/tcp$/, '');
+      });
+    } else {
+      log.warn({
+        instance: req.instance
+      }, '_processNaviError instance !ports');
+    }
   }
 
   if (req.query.type === 'signin') {
