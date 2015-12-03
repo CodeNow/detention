@@ -29,5 +29,3 @@ module.exports = function (namespace) {
     module: path.relative(process.cwd(), namespace)
   });
 }
-
-module.exports._serializers = serializers;
