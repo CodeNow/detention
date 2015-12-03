@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 assign(app.locals, {
-  localVersionversion: version,
+  localVersion: version,
   absoluteUrl: process.env.ABSOLUTE_URL
 });
 
