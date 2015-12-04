@@ -163,6 +163,7 @@ describe('app.js', function () {
     var instance;
     beforeEach(function (done) {
       instance = {
+        getBranchName: sinon.stub().returns('master'),
         attrs: {
           lowerName: 'api',
           owner: {
@@ -203,6 +204,7 @@ describe('app.js', function () {
             ownerName: 'casey',
             ports: ['80']
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -231,6 +233,7 @@ describe('app.js', function () {
             ports: ['80'],
             headerText: 'is stopped'
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -259,6 +262,7 @@ describe('app.js', function () {
             ports: ['80'],
             headerText: 'is running'
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -287,6 +291,7 @@ describe('app.js', function () {
             ports: ['80'],
             headerText: 'build failed'
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -315,6 +320,7 @@ describe('app.js', function () {
             ports: ['80'],
             headerText: 'is building'
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -343,6 +349,7 @@ describe('app.js', function () {
             ports: ['80'],
             headerText: 'is starting'
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -371,6 +378,7 @@ describe('app.js', function () {
             ports: ['80'],
             headerText: 'is starting'
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
@@ -395,6 +403,7 @@ describe('app.js', function () {
             ownerName: 'casey',
             ports: ['80']
           });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
         }
       };
