@@ -1,5 +1,4 @@
-Detention
-=========
+# Detention
 
 ### Navi request general error message response producing service.
 
