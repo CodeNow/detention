@@ -145,9 +145,11 @@ app._processNaviError = function (req, res, next) {
 
   if (req.query.type === 'signin') {
     log.trace('processNaviError type signin');
+    res.status(401);
     return res.render('pages/signin', options);
   }
   if (req.query.type === 'not_running') {
+    res.status(503);
     log.trace('processNaviError type not_running');
 
     // container state error pages.
@@ -212,6 +214,7 @@ app._processNaviError = function (req, res, next) {
   }
   if (req.query.type === 'unresponsive'){
     log.trace('processNaviError type unresponsive');
+    res.status(503);
     res.render('pages/unresponsive', options);
     return;
   }
