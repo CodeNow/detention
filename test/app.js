@@ -195,7 +195,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 401);
           expect(page).to.equal('pages/signin');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -223,7 +226,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/dead');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -252,7 +258,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/dead');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -281,7 +290,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/dead');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -310,7 +322,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/dead');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -339,7 +354,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/dead');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -368,7 +386,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/dead');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
@@ -394,7 +415,10 @@ describe('app.js', function () {
         }
       };
       var res = {
+        status: sinon.stub(),
         render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
           expect(page).to.equal('pages/unresponsive');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
