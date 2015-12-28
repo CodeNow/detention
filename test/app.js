@@ -237,7 +237,7 @@ describe('app.js', function () {
             instanceName: 'api',
             ownerName: 'casey',
             ports: ['80'],
-            headerText: 'is stopped'
+            headerText: ' Stopped'
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -269,7 +269,7 @@ describe('app.js', function () {
             instanceName: 'api',
             ownerName: 'casey',
             ports: ['80'],
-            headerText: 'is running'
+            headerText: ' Running'
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -301,7 +301,7 @@ describe('app.js', function () {
             instanceName: 'api',
             ownerName: 'casey',
             ports: ['80'],
-            headerText: 'build failed'
+            headerText: ' Failed'
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -333,7 +333,7 @@ describe('app.js', function () {
             instanceName: 'api',
             ownerName: 'casey',
             ports: ['80'],
-            headerText: 'is building'
+            headerText: ' Building'
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -365,7 +365,7 @@ describe('app.js', function () {
             instanceName: 'api',
             ownerName: 'casey',
             ports: ['80'],
-            headerText: 'is starting'
+            headerText: ' Starting'
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -397,7 +397,7 @@ describe('app.js', function () {
             instanceName: 'api',
             ownerName: 'casey',
             ports: ['80'],
-            headerText: 'is starting'
+            headerText: ' Starting'
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
