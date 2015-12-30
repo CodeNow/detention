@@ -163,34 +163,37 @@ app._processNaviError = function (req, res, next) {
 
     options.status = status;
     switch(status) {
-      case 'stopped':
       case 'crashed':
+        options.headerText = ' Crashed';
+        res.render('pages/dead', options);
+        break;
+      case 'stopped':
       case 'stopping':
-        options.headerText = 'is ' + status;
+        options.headerText = ' Stopped';
         res.render('pages/dead', options);
         break;
       case 'running':
         // The instance could have started after Navi fetched it and proxied to detention.
         // Might not be the best idea to trigger a refresh, could easily result in user-unfriendly
         // infinite redirect loops. Better to display an error page prompting user to refresh?
-        options.headerText = 'is running';
-        res.render('pages/dead', options);
-        break;
-      case 'buildFailed':
-        options.headerText = 'build failed';
-        res.render('pages/dead', options);
-        break;
-      case 'building':
-        options.headerText = 'is building';
+        options.headerText = ' Running';
         res.render('pages/dead', options);
         break;
       case 'neverStarted':
+      case 'buildFailed':
+        options.headerText = ' Build Failed';
+        res.render('pages/dead', options);
+        break;
+      case 'building':
+        options.headerText = ' Building';
+        res.render('pages/dead', options);
+        break;
       case 'starting':
-        options.headerText = 'is starting';
+        options.headerText = ' Starting';
         res.render('pages/dead', options);
         break;
       case 'unknown':
-        options.headerText = 'unknown';
+        options.headerText = ' Status Unknown';
         res.render('pages/dead', options);
         break;
     }
