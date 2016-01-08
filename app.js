@@ -152,6 +152,15 @@ app._processNaviError = function (req, res, next) {
     res.status(503);
     log.trace('processNaviError type not_running');
 
+    if(keypather.get(req.instance, 'contextVersion.attrs.dockRemoved')){
+      log.trace({
+        options: options
+      }, 'processNaviError instance dock_removed');
+      options.status = 'is migrating.';
+      options.headerText = ' Migrating';
+      res.render('pages/dead', options);
+    }
+
     // container state error pages.
     // - Not running (building, starting, crashed)
     // - Running, but unresponsive
