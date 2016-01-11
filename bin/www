@@ -14,7 +14,7 @@ var log = require('../logger')(__filename);
 
 var requiredEnvKeys = [
   'HELLO_RUNNABLE_GITHUB_TOKEN',
-  'API_HOSTNAME'
+  'API_URL'
 ];
 if (!hasKeypaths(process.env, requiredEnvKeys)) {
   log.error({
