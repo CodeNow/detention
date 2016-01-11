@@ -152,7 +152,7 @@ app._processNaviError = function (req, res, next) {
     res.status(503);
     log.trace('processNaviError type not_running');
 
-    if(keypather.get(req.instance, 'contextVersion.attrs.dockRemoved')){
+    if (keypather.get(req.instance, 'contextVersion.attrs.dockRemoved')) {
       log.trace({
         options: options
       }, 'processNaviError instance dock_removed');
