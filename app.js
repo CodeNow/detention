@@ -158,7 +158,7 @@ app._processNaviError = function (req, res, next) {
       }, 'processNaviError instance dock_removed');
       options.status = 'is migrating.';
       options.headerText = ' Migrating';
-      res.render('pages/dead', options);
+      return res.render('pages/dead', options);
     }
 
     // container state error pages.

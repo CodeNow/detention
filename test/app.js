@@ -7,6 +7,7 @@ var Code = require('code');
 var Lab = require('lab');
 var noop = require('101/noop');
 var sinon = require('sinon');
+var keypather = require('keypather')();
 
 var lab = exports.lab = Lab.script();
 
@@ -402,5 +403,37 @@ describe('app.js', function () {
       app._processNaviError(req, res, noop);
     });
 
+    it('should render dock removed if type is not running and the dock has been removed', function (done) {
+      instance.status = function () {
+        return 'building';
+      };
+      keypather.set(instance, 'contextVersion.attrs.dockRemoved', true)
+      var req = {
+        instance: instance,
+        query: {
+          type: 'not_running',
+          shortHash: 'axcde'
+        }
+      };
+      var res = {
+        status: sinon.stub(),
+        render: function (page, opts) {
+          sinon.assert.calledOnce(res.status);
+          sinon.assert.calledWith(res.status, 503);
+          expect(page).to.equal('pages/dead');
+          expect(opts).to.deep.contain({
+            shortHash: 'axcde',
+            branchName: 'master',
+            instanceName: 'api',
+            ownerName: 'casey',
+            ports: ['80'],
+            headerText: ' Migrating'
+          });
+          sinon.assert.callCount(req.instance.getBranchName, 1);
+          done();
+        }
+      };
+      app._processNaviError(req, res, noop);
+    });
   });
 });
