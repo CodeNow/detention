@@ -34,7 +34,7 @@ assign(app.locals, {
 });
 
 // this is used for hello runnable user so we only have to login once
-var superUser = app.superUser = new Runnable(process.env.API_HOSTNAME, {
+var superUser = app.superUser = new Runnable(process.env.API_URL, {
   requestDefaults: {
     headers: {
       'user-agent': 'detention-root'
