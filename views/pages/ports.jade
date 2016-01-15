@@ -1,9 +1,9 @@
 extends ../index.jade
 block content
   h1.h1 Port not exposed
-  p.p The container for
-    strong.strong  #{instanceName}
-    |  is running, but this port is not exposed.
+  p.p The container for&#32;
+    strong.strong #{instanceName}
+    | &#32;is running, but this port is not exposed.
   p.p Exposed ports: #{''}
     if (!ports || ports.length === 0)
       span.span (none)
@@ -14,6 +14,9 @@ block content
         a.link(
           href = ":#{port}"
         ) #{port}
+  a.link(
+    href = "#"
+  ) View in Runnable
 //
   a.link(
     href = "//runnable.io/#{ownerName}/configure/#{instanceName}"
