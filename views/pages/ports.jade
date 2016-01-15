@@ -2,7 +2,7 @@ extends ../index.jade
 block content
   h1.h1 Port not exposed
   p.p The container for
-    strong.strong  #{branchName}
+    strong.strong  #{instanceName}
     |  is running, but this port is not exposed.
   p.p Exposed ports: #{''}
     if (!ports || ports.length === 0)
