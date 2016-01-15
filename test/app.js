@@ -231,14 +231,13 @@ describe('app.js', function () {
         render: function (page, opts) {
           sinon.assert.calledOnce(res.status);
           sinon.assert.calledWith(res.status, 503);
-          expect(page).to.equal('pages/dead');
+          expect(page).to.equal('pages/stopped');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
             instanceName: 'api',
             ownerName: 'casey',
-            ports: ['80'],
-            headerText: ' Stopped'
+            ports: ['80']
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -247,7 +246,7 @@ describe('app.js', function () {
       app._processNaviError(req, res, noop);
     });
 
-    it('should render not_running state running', function (done) {
+    it('should render state running', function (done) {
       instance.status = function () {
         return 'running';
       };
@@ -263,14 +262,13 @@ describe('app.js', function () {
         render: function (page, opts) {
           sinon.assert.calledOnce(res.status);
           sinon.assert.calledWith(res.status, 503);
-          expect(page).to.equal('pages/dead');
+          expect(page).to.equal('pages/running');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
             instanceName: 'api',
             ownerName: 'casey',
-            ports: ['80'],
-            headerText: ' Running'
+            ports: ['80']
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -295,14 +293,13 @@ describe('app.js', function () {
         render: function (page, opts) {
           sinon.assert.calledOnce(res.status);
           sinon.assert.calledWith(res.status, 503);
-          expect(page).to.equal('pages/dead');
+          expect(page).to.equal('pages/buildFailed');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
             instanceName: 'api',
             ownerName: 'casey',
-            ports: ['80'],
-            headerText: ' Build Failed'
+            ports: ['80']
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -327,14 +324,13 @@ describe('app.js', function () {
         render: function (page, opts) {
           sinon.assert.calledOnce(res.status);
           sinon.assert.calledWith(res.status, 503);
-          expect(page).to.equal('pages/dead');
+          expect(page).to.equal('pages/building');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
             instanceName: 'api',
             ownerName: 'casey',
-            ports: ['80'],
-            headerText: ' Building'
+            ports: ['80']
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -359,14 +355,13 @@ describe('app.js', function () {
         render: function (page, opts) {
           sinon.assert.calledOnce(res.status);
           sinon.assert.calledWith(res.status, 503);
-          expect(page).to.equal('pages/dead');
+          expect(page).to.equal('pages/buildFailed');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
             instanceName: 'api',
             ownerName: 'casey',
-            ports: ['80'],
-            headerText: ' Build Failed'
+            ports: ['80']
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
@@ -420,14 +415,13 @@ describe('app.js', function () {
         render: function (page, opts) {
           sinon.assert.calledOnce(res.status);
           sinon.assert.calledWith(res.status, 503);
-          expect(page).to.equal('pages/dead');
+          expect(page).to.equal('pages/migrating');
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
             instanceName: 'api',
             ownerName: 'casey',
-            ports: ['80'],
-            headerText: ' Migrating'
+            ports: ['80']
           });
           sinon.assert.callCount(req.instance.getBranchName, 1);
           done();
