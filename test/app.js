@@ -164,6 +164,7 @@ describe('app.js', function () {
     var instance;
     beforeEach(function (done) {
       instance = {
+        getRepoAndBranchName: sinon.stub().returns('api/master'),
         getBranchName: sinon.stub().returns('master'),
         attrs: {
           lowerName: 'api',
@@ -204,7 +205,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -235,7 +236,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -266,7 +267,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -297,7 +298,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -328,7 +329,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -359,7 +360,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -387,7 +388,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
@@ -419,7 +420,7 @@ describe('app.js', function () {
           expect(opts).to.deep.contain({
             shortHash: 'axcde',
             branchName: 'master',
-            instanceName: 'api',
+            instanceName: 'api/master',
             ownerName: 'casey',
             ports: ['80']
           });
