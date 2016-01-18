@@ -125,6 +125,7 @@ app._processNaviError = function (req, res, next) {
   });
 
   if (req.instance) {
+    options.instanceLowername = req.instance.attrs.lowerName
     options.branchName = req.instance.getBranchName();
     // Temp missing pending resolution of SAN-3018
     // https://runnable.atlassian.net/browse/SAN-3018
