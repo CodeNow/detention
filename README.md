@@ -1,5 +1,9 @@
 # Detention
 
+### Running Locally
+
+You need API_URL and HELLO_RUNNABLE_GITHUB_TOKEN env's set. Then simply run `npm start`
+
 ### Navi request general error message response producing service.
 
 Navi will proxy to this service in the event of several types of error scenarios. Detention fetches
