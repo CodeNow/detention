@@ -125,10 +125,15 @@ app._processNaviError = function (req, res, next) {
   });
 
   if (req.instance) {
+    options.instanceLowername = req.instance.attrs.lowerName
     options.branchName = req.instance.getBranchName();
     // Temp missing pending resolution of SAN-3018
     // https://runnable.atlassian.net/browse/SAN-3018
-    options.instanceName = keypather.get(req.instance, 'attrs.lowerName');
+    options.instanceName = req.instance.getRepoAndBranchName();
+    if (!options.branchName) {
+      options.instanceName = req.instance.attrs.name;
+    }
+
     options.ownerName = keypather.get(req.instance, 'attrs.owner.username');
     var ports = keypather.get(req.instance, 'attrs.container.ports');
     if (ports) {
@@ -156,9 +161,7 @@ app._processNaviError = function (req, res, next) {
       log.trace({
         options: options
       }, 'processNaviError instance dock_removed');
-      options.status = 'is migrating.';
-      options.headerText = ' Migrating';
-      return res.render('pages/dead', options);
+      return res.render('pages/migrating', options);
     }
 
     // container state error pages.
@@ -173,37 +176,30 @@ app._processNaviError = function (req, res, next) {
     options.status = status;
     switch(status) {
       case 'crashed':
-        options.headerText = ' Crashed';
-        res.render('pages/dead', options);
+        res.render('pages/crashed', options);
         break;
       case 'stopped':
       case 'stopping':
-        options.headerText = ' Stopped';
-        res.render('pages/dead', options);
+        res.render('pages/stopped', options);
         break;
       case 'running':
         // The instance could have started after Navi fetched it and proxied to detention.
         // Might not be the best idea to trigger a refresh, could easily result in user-unfriendly
         // infinite redirect loops. Better to display an error page prompting user to refresh?
-        options.headerText = ' Running';
-        res.render('pages/dead', options);
+        res.render('pages/running', options);
         break;
       case 'neverStarted':
       case 'buildFailed':
-        options.headerText = ' Build Failed';
-        res.render('pages/dead', options);
+        res.render('pages/buildFailed', options);
         break;
       case 'building':
-        options.headerText = ' Building';
-        res.render('pages/dead', options);
+        res.render('pages/building', options);
         break;
       case 'starting':
-        options.headerText = ' Starting';
-        res.render('pages/dead', options);
+        res.render('pages/starting', options);
         break;
       case 'unknown':
-        options.headerText = ' Status Unknown';
-        res.render('pages/dead', options);
+        res.render('pages/unknown', options);
         break;
     }
     return;
