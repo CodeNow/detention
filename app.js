@@ -231,6 +231,7 @@ app._processNaviError = function (req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/health', function (req, res) { res.send(200); } );
 
 app.route('/*').get(
   app._validateRequest,
