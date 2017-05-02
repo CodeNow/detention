@@ -22,7 +22,7 @@
     "grunt-jade-plugin": "^0.6.0",
     "jade": "~1.9.2",
     "keypather": "^1.10.1",
-    "runnable": "git+ssh://git@github.com:CodeNow/runnable-api-client#v4.7.1",
+    "@runnable/api-client": "~9.2.9",
     "serve-favicon": "~2.2.1",
     "error-cat": "~1.4.0"
   },

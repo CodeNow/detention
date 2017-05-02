@@ -4,7 +4,7 @@
 'use strict';
 
 var ErrorCat = require('error-cat');
-var Runnable = require('runnable');
+var Runnable = require('@runnable/api-client');
 var assign = require('101/assign');
 var bodyParser = require('body-parser');
 var express = require('express');
